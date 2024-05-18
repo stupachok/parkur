@@ -25,7 +25,7 @@ class GameSprite(sprite.Sprite):
         self.rect.midbottom = (player_x, player_y)
         self.isJump = False
         self.jumpCount = 8
-
+        self.jumpCooldown = 60
     def draw(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
 
@@ -55,7 +55,10 @@ class GameSprite(sprite.Sprite):
                     self.rect.bottom = wall.rect.top
                     break
 
-        if keys_pressed[K_SPACE]:
+        if self.jumpCooldown > 0:
+            self.jumpCooldown -= 1
+
+        if keys_pressed[K_SPACE] and self.jumpCooldown == 0:
             self.isJump = True
 
         if self.isJump:
@@ -74,6 +77,7 @@ class GameSprite(sprite.Sprite):
             else:
                 self.isJump = False
                 self.jumpCount = 8
+                self.jumpCooldown = 40
 
 
 
